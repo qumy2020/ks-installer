@@ -8,33 +8,33 @@ metadata:
     version: v3.1.0
 spec:
   persistence:
-    storageClass: ""        # If there is no default StorageClass in your cluster, you need to specify an existing StorageClass here.
+    storageClass: ""        # 如果您的集群中没有默认的StorageClass，则需要在此处指定现有的StorageClass。
   authentication:
-    jwtSecret: ""           # Keep the jwtSecret consistent with the Host Cluster. Retrieve the jwtSecret by executing "kubectl -n kubesphere-system get cm kubesphere-config -o yaml | grep -v "apiVersion" | grep jwtSecret" on the Host Cluster.
-  local_registry: ""        # Add your private registry address if it is needed.
+    jwtSecret: ""           # 保持jwtSecret与主机集群一致。通过在主机集群上执行 “kubectl -n kubesphere-system get cm kubesphere-config -o yaml | grep -v” apiVersion “| grep jwtSecret” 来检索jwtSecret。
+  local_registry: ""        # 如果需要，请添加您的私人注册表地址。
   etcd:
-    monitoring: false       # Enable or disable etcd monitoring dashboard installation. You have to create a Secret for etcd before you enable it.
-    endpointIps: localhost  # etcd cluster EndpointIps. It can be a bunch of IPs here.
-    port: 2379              # etcd port.
+    monitoring: false       # 启用或禁用etcd监控仪表板安装。在启用它之前，您必须为etcd创建一个秘密。
+    endpointIps: localhost  # etcd集群端点。这里可以是一堆ip。
+    port: 2379              # etcd端口。
     tlsEnable: true
   common:
     redis:
       enabled: false
     openldap:
       enabled: false
-    minioVolumeSize: 20Gi # Minio PVC size.
+    minioVolumeSize: 20Gi # Minio PVC 尺寸.
     openldapVolumeSize: 2Gi   # openldap PVC size.
     redisVolumSize: 2Gi # Redis PVC size.
     monitoring:
-      # type: external   # Whether to specify the external prometheus stack, and need to modify the endpoint at the next line.
-      endpoint: http://prometheus-operated.kubesphere-monitoring-system.svc:9090 # Prometheus endpoint to get metrics data.
-    es:   # Storage backend for logging, events and auditing.
-      # elasticsearchMasterReplicas: 1   # The total number of master nodes. Even numbers are not allowed.
-      # elasticsearchDataReplicas: 1     # The total number of data nodes.
-      elasticsearchMasterVolumeSize: 4Gi   # The volume size of Elasticsearch master nodes.
-      elasticsearchDataVolumeSize: 20Gi    # The volume size of Elasticsearch data nodes.
-      logMaxAge: 7                     # Log retention time in built-in Elasticsearch. It is 7 days by default.
-      elkPrefix: logstash              # The string making up index names. The index name will be formatted as ks-<elk_prefix>-log.
+      # type: external   # 是否指定外部prometheus堆栈，并需要在下一行修改端点。
+      endpoint: http://prometheus-operated.kubesphere-monitoring-system.svc:9090 # Prometheus端点获取指标数据。
+    es:   # 用于日志记录、事件和审计的存储后端。
+      # elasticsearchMasterReplicas: 1   # master节点的总数。偶数是不允许的。
+      # elasticsearchDataReplicas: 1     # 数据节点总数。
+      elasticsearchMasterVolumeSize: 4Gi   # Elasticsearch主节点的卷大小。
+      elasticsearchDataVolumeSize: 20Gi    # Elasticsearch数据节点的卷大小。
+      logMaxAge: 7                     # 内置Elasticsearch中的日志保留时间。默认情况下是7天。
+      elkPrefix: logstash              # 组成索引名称的字符串。索引名称将被格式化为ks-<elk_prefix>-log。
       basicAuth:
         enabled: false
         username: ""
@@ -42,58 +42,58 @@ spec:
       externalElasticsearchUrl: ""
       externalElasticsearchPort: ""
   console:
-    enableMultiLogin: true  # Enable or disable simultaneous logins. It allows different users to log in with the same account at the same time.
+    enableMultiLogin: true  # 启用或禁用同时登录。它允许不同的用户同时使用同一帐户登录。
     port: 30880
-  alerting:                # (CPU: 0.1 Core, Memory: 100 MiB) It enables users to customize alerting policies to send messages to receivers in time with different time intervals and alerting levels to choose from.
-    enabled: false         # Enable or disable the KubeSphere Alerting System.
+  alerting:                # (CPU: 0.1 Core, Memory: 100 MiB)它使用户能够自定义警报策略，以便以不同的时间间隔和警报级别及时向接收者发送消息，以供选择。
+    enabled: false         # 启用或禁用KubeSphere警报系统。
     # thanosruler:
     #   replicas: 1
     #   resources: {}
-  auditing:                # Provide a security-relevant chronological set of records，recording the sequence of activities happening on the platform, initiated by different tenants.
-    enabled: false         # Enable or disable the KubeSphere Auditing Log System. 
-  devops:                  # (CPU: 0.47 Core, Memory: 8.6 G) Provide an out-of-the-box CI/CD system based on Jenkins, and automated workflow tools including Source-to-Image & Binary-to-Image.
-    enabled: false             # Enable or disable the KubeSphere DevOps System.
+  auditing:                # 提供与安全性相关的时间顺序记录集，记录平台上由不同租户发起的活动顺序。
+    enabled: false         # 启用或禁用kubespere审计日志系统。
+  devops:                  # (CPU: 0.47核心，内存: 8.6G) 提供了一个基于Jenkins的开箱即用的CICD系统，以及包括源到图像和二进制到图像在内的自动化工作流工具。
+    enabled: false             # 启用或禁用KubeSphere DevOps系统。
     jenkinsMemoryLim: 2Gi      # Jenkins memory limit.
     jenkinsMemoryReq: 1500Mi   # Jenkins memory request.
     jenkinsVolumeSize: 8Gi     # Jenkins volume size.
-    jenkinsJavaOpts_Xms: 512m  # The following three fields are JVM parameters.
+    jenkinsJavaOpts_Xms: 512m  # 以下三个字段是JVM参数。
     jenkinsJavaOpts_Xmx: 512m
     jenkinsJavaOpts_MaxRAM: 2g
-  events:                  # Provide a graphical web console for Kubernetes Events exporting, filtering and alerting in multi-tenant Kubernetes clusters.
-    enabled: false         # Enable or disable the KubeSphere Events System.
+  events:                  # 为多租户Kubernetes集群中的Kubernetes事件导出、过滤和报警提供图形化的web控制台。
+    enabled: false         # 启用或禁用KubeSphere事件系统。
     ruler:
       enabled: true
       replicas: 2
-  logging:                 # (CPU: 57 m, Memory: 2.76 G) Flexible logging functions are provided for log query, collection and management in a unified console. Additional log collectors can be added, such as Elasticsearch, Kafka and Fluentd.
-    enabled: false         # Enable or disable the KubeSphere Logging System.
+  logging:                 # (CPU: 57 m，内存: 2.76G) 在统一的控制台中提供灵活的日志记录功能，用于日志查询，收集和管理。可以添加额外的日志收集器，例如Elasticsearch，Kafka和Fluentd。
+    enabled: false         # 启用或禁用kubespere日志记录系统。
     logsidecar:
       enabled: true
       replicas: 2
-  metrics_server:                    # (CPU: 56 m, Memory: 44.35 MiB) It enables HPA (Horizontal Pod Autoscaler).
-    enabled: false                   # Enable or disable metrics-server.
+  metrics_server:                    # (CPU: 56 m，内存: 44.35 MiB) 它启用HPA (水平吊舱自动缩放器)。
+    enabled: false                   # 启用或禁用指标-服务器。
   monitoring:
-    storageClass: ""                 # If there is an independent StorageClass you need for Prometheus, you can specify it here. The default StorageClass is used by default.
-    # prometheusReplicas: 1          # Prometheus replicas are responsible for monitoring different segments of data source and providing high availability.
+    storageClass: ""                 # 如果您需要Prometheus的独立StorageClass，则可以在此处指定。默认情况下使用默认的StorageClass。
+    # prometheusReplicas: 1          # Prometheus副本负责监视数据源的不同细分并提供高可用性。
     prometheusMemoryRequest: 400Mi   # Prometheus request memory.
     prometheusVolumeSize: 20Gi       # Prometheus PVC size.
     # alertmanagerReplicas: 1          # AlertManager Replicas.
   multicluster:
-    clusterRole: none  # host | member | none  # You can install a solo cluster, or specify it as the Host or Member Cluster.
+    clusterRole: none  # host | member | none  # 您可以安装单独集群，也可以将其指定为主机或成员集群。
   network:
-    networkpolicy: # Network policies allow network isolation within the same cluster, which means firewalls can be set up between certain instances (Pods).
-      # Make sure that the CNI network plugin used by the cluster supports NetworkPolicy. There are a number of CNI network plugins that support NetworkPolicy, including Calico, Cilium, Kube-router, Romana and Weave Net.
-      enabled: false # Enable or disable network policies.
-    ippool: # Use Pod IP Pools to manage the Pod network address space. Pods to be created can be assigned IP addresses from a Pod IP Pool.
-      type: none # Specify "calico" for this field if Calico is used as your CNI plugin. "none" means that Pod IP Pools are disabled.
-    topology: # Use Service Topology to view Service-to-Service communication based on Weave Scope.
-      type: none # Specify "weave-scope" for this field to enable Service Topology. "none" means that Service Topology is disabled.
-  openpitrix: # An App Store that is accessible to all platform tenants. You can use it to manage apps across their entire lifecycle.
+    networkpolicy: # 网络策略允许在同一群集内进行网络隔离，这意味着可以在某些实例 (pod) 之间设置防火墙。
+      # 确保集群使用的CNI网络插件支持NetworkPolicy。有许多支持NetworkPolicy的CNI网络插件，包括Calico，Cilium，Kube-router，Romana和Weave Net。
+      enabled: false # 启用或禁用网络策略。
+    ippool: # 使用Pod IP池管理Pod网络地址空间。要创建的Pod可以从Pod IP池中分配ip地址。
+      type: none # 如果calico用作您的CNI插件，请为此字段指定 “Calico”。“无” 表示禁用Pod IP池。
+    topology: # 使用服务拓扑基于编织范围查看服务到服务通信。
+      type: none # 为此字段指定 “weave-scope” 以启用服务拓扑。“无” 表示服务拓扑被禁用。
+  openpitrix: # 所有平台租户均可访问的应用商店。您可以使用它来管理应用程序的整个生命周期。
     store:
-      enabled: false # Enable or disable the KubeSphere App Store.
-  servicemesh:         # (0.3 Core, 300 MiB) Provide fine-grained traffic management, observability and tracing, and visualized traffic topology.
-    enabled: false     # Base component (pilot). Enable or disable KubeSphere Service Mesh (Istio-based).
-  kubeedge:          # Add edge nodes to your cluster and deploy workloads on edge nodes.
-    enabled: false   # Enable or disable KubeEdge.
+      enabled: false # 启用或禁用KubeSphere应用商店。
+  servicemesh:         # (0.3核心，300 MiB) 提供细粒度的流量管理、可观察性和跟踪以及可视化的流量拓扑。
+    enabled: false     # 基本组件 (飞行员)。启用或禁用KubeSphere服务网格 (基于Istio)。
+  kubeedge:          # 将边缘节点添加到您的集群中，并在边缘节点上部署工作负载。
+    enabled: false   # 启用或禁用KubeEdge。
     cloudCore:
       nodeSelector: {"node-role.kubernetes.io/worker": ""}
       tolerations: []
@@ -103,8 +103,8 @@ spec:
       cloudstreamPort: "10003"
       tunnelPort: "10004"
       cloudHub:
-        advertiseAddress: # At least a public IP address or an IP address which can be accessed by edge nodes must be provided.
-          - ""            # Note that once KubeEdge is enabled, CloudCore will malfunction if the address is not provided.
+        advertiseAddress: # 至少必须提供一个公共ip地址或边缘节点可以访问的ip地址。
+          - ""            # 请注意，一旦启用KubeEdge，如果未提供地址，CloudCore将出现故障。
         nodeLimit: "100"
       service:
         cloudhubNodePort: "30000"
